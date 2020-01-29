@@ -1,3 +1,5 @@
+'use strict'
+
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
@@ -25,6 +27,21 @@ const schema = new mongoose.Schema({
 	series: {
 		type: String,
 		lowercase: true
+	},
+	rating: {
+		type: Number
+	},
+	cover: {
+		type: String
+	},
+	lang: {
+		type: String,
+		required: true,
+		default: 'en'
+	},
+	publisher: {
+		type: String,
+		lowercasea: true
 	}
 })
 
@@ -42,12 +59,37 @@ exports.remove = (id) => {
 	})
 }
 
-exports.view = (id) => {
+exports.viewOne = (id) => {
 	return new Promise((resovle, reject) => {
-		Book.findById(id, (book, err) => {
-			if(err) reject(err)
-			resovle(book)
-		})
+		let book = Book
+			.findById(id)
+			.exec((err, book) => {
+				if(err) { reject(err) }
+				resovle(book)
+			})
 	})
 }
-// module.exports = Book
+
+exports.viewPage = (limit, page) => {
+	return new Promise((resolve, reject) => {
+		Book
+			.find()
+			.limit(limit)
+			.skip(limit * page)
+			.exec((err, books) => {
+				if(err) { reject(err) }
+				resolve(books)
+			})
+	})
+}
+
+exports.viewAll = () => {
+	return new Promise((resolve, reject) => {
+		Book
+			.find((err, books) => {
+				if(err) { reject(err) }
+				resolve(books)
+			})
+	})
+}
+

@@ -1,3 +1,5 @@
+'use strict'
+
 const BookModel = require('./book.model')
 
 module.exports = class BookController {
@@ -8,7 +10,13 @@ module.exports = class BookController {
 	}
 
 	async viewBook(id) {
-		const bookRecord = await BookModel.view(id)
+		const bookRecord = await BookModel.viewOne(id)
 		return bookRecord
 	}
+
+	async viewBooks(limit, page) {
+		const bookRecords = await BookModel.viewPage(limit, page)
+		return bookRecords
+	}
 }
+
