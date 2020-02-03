@@ -1,6 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const blueBird = require('bluebird')
 
 const schema = new mongoose.Schema({
 	title: {
